@@ -20,5 +20,8 @@
     "url": "https://github.com/vastus/node-hcaptcha/issues"
   },
   "homepage": "https://github.com/vastus/node-hcaptcha#readme",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  }
 }
