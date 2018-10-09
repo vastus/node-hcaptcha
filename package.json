@@ -1,5 +1,5 @@
 {
-  "name": "node-hcaptcha",
+  "name": "hcaptcha",
   "version": "0.0.1",
   "description": "Verify hCaptcha token",
   "main": "index.js",
