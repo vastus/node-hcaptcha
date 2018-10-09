@@ -1,19 +1,22 @@
-var https = require('https');
-var querystring = require('querystring');
+const https = require('https');
+const querystring = require('querystring');
 
-var VERIFY_URL = 'https://hcaptcha.com/siteverify';
+const host = 'hcaptcha.com';
+const path = '/siteverify';
 
 // verifies the given token by doing an HTTP POST request
 // to the hcaptcha.com/siteverify endpoint by passing the
 // hCaptcha secret key and token as the payload.
-function verify(secret, token) {
+const verify = (secret, token) => {
   return new Promise(function verifyPromise(resolve, reject) {
     // stringify the payload
-    var data = querystring.stringify({secret, response: token});
+    const data = querystring.stringify({secret, response: token});
 
     // set up options for the request
     // note that we're using form data here instead of sending JSON
-    var options = {
+    const options = {
+      host,
+      path,
       method: 'POST',
       headers: {
         'content-type': 'application/x-www-form-urlencoded',
@@ -21,10 +24,10 @@ function verify(secret, token) {
       },
     };
 
-    // make the request, add response to buffer, and finally resolve with the
-    // response. if any errors arise call the promise's reject function with
-    // the error.
-    var request = https.request(VERIFY_URL, options, function onResponse(response) {
+    // make the request, add response chunks to buffer, and finally resolve
+    // with the response. if any errors arise call the promise's reject
+    // function with the error.
+    const request = https.request(options, (response) => {
       response.setEncoding('utf8');
 
       var buffer = '';
@@ -39,6 +42,8 @@ function verify(secret, token) {
     request.write(data);
     request.end();
   });
-}
+};
 
-module.exports = {verify};
+module.exports = {
+  verify,
+};
