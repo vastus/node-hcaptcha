@@ -30,7 +30,7 @@ const verify = (secret, token) => {
     const request = https.request(options, (response) => {
       response.setEncoding('utf8');
 
-      var buffer = '';
+      let buffer = '';
 
       response
         .on('error', reject)
