@@ -1,6 +1,6 @@
 # hcaptcha
 
-Verify hCaptcha token validity.
+Verify hCaptcha token validity; simply w/ no dependencies.
 
 ## Install
 
