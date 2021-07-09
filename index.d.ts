@@ -28,6 +28,8 @@ declare module "hcaptcha" {
    *
    * @param secret HCaptcha secret key (`0x...`)
    * @param token HCaptcha challenge token (`P0_ey...`)
+   * @param remoteip Optional. The user's IP address.
+   * @param sitekey Optional. The sitekey you expect to see.
    */
-  export function verify(secret: string, token: string): Promise<VerifyResponse>;
+  export function verify(secret: string, token: string, remoteip?: string, sitekey?: string): Promise<VerifyResponse>;
 }
