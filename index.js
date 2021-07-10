@@ -7,9 +7,9 @@ const path = '/siteverify';
 // verifies the given token by doing an HTTP POST request
 // to the hcaptcha.com/siteverify endpoint by passing the
 // hCaptcha secret key and token as the payload.
-const verify = (secret, token, remoteip, sitekey) => {
+const verify = (secret, token, remoteip = null, sitekey = null) => {
   return new Promise(function verifyPromise(resolve, reject) {
-    const payload = {secret: secret, response: token};
+    const payload = {secret, response: token};
     if (remoteip) {
       payload.remoteip = remoteip;
     }
