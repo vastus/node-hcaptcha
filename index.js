@@ -7,10 +7,17 @@ const path = '/siteverify';
 // verifies the given token by doing an HTTP POST request
 // to the hcaptcha.com/siteverify endpoint by passing the
 // hCaptcha secret key and token as the payload.
-const verify = (secret, token) => {
+const verify = (secret, token, remoteip = null, sitekey = null) => {
   return new Promise(function verifyPromise(resolve, reject) {
+    const payload = {secret, response: token};
+    if (remoteip) {
+      payload.remoteip = remoteip;
+    }
+    if (sitekey) {
+      payload.sitekey = sitekey;
+    }
     // stringify the payload
-    const data = querystring.stringify({secret, response: token});
+    const data = querystring.stringify(payload);
 
     // set up options for the request
     // note that we're using form data here instead of sending JSON
