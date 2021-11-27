@@ -1,8 +1,16 @@
 const https = require('https');
-const querystring = require('querystring');
+const { URLSearchParams } = require('url');
 
 const host = 'hcaptcha.com';
 const path = '/siteverify';
+
+const stringify = (options = {}) => {
+  const params = new URLSearchParams();
+
+  Object.keys(options).forEach((key) => params.append(key, options[key]));
+
+  return params.toString();
+};
 
 // verifies the given token by doing an HTTP POST request
 // to the hcaptcha.com/siteverify endpoint by passing the
@@ -17,7 +25,7 @@ const verify = (secret, token, remoteip = null, sitekey = null) => {
       payload.sitekey = sitekey;
     }
     // stringify the payload
-    const data = querystring.stringify(payload);
+    const data = stringify(payload);
 
     // set up options for the request
     // note that we're using form data here instead of sending JSON
