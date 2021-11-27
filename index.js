@@ -18,12 +18,15 @@ const stringify = (options = {}) => {
 const verify = (secret, token, remoteip = null, sitekey = null) => {
   return new Promise(function verifyPromise(resolve, reject) {
     const payload = {secret, response: token};
+
     if (remoteip) {
       payload.remoteip = remoteip;
     }
+
     if (sitekey) {
       payload.sitekey = sitekey;
     }
+
     // stringify the payload
     const data = stringify(payload);
 
