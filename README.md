@@ -4,14 +4,14 @@ Verify hCaptcha token validity; simply w/ no dependencies.
 
 ## Install
 
-```
+```bash
 npm install --save hcaptcha
 ```
 
 ## Usage
 
 ```js
-const {verify} = require('hcaptcha');
+const { verify } = require('hcaptcha');
 
 const secret = 'my hcaptcha secret from hcaptcha.com';
 const token = 'token from widget';
