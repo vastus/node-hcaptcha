@@ -1,54 +1,56 @@
 const https = require('https');
-const querystring = require('querystring');
 
-const host = 'hcaptcha.com';
-const path = '/siteverify';
+const HOST = 'hcaptcha.com';
+const PATH = '/siteverify';
 
-// verifies the given token by doing an HTTP POST request
-// to the hcaptcha.com/siteverify endpoint by passing the
-// hCaptcha secret key and token as the payload.
-const verify = (secret, token, remoteip = null, sitekey = null) => {
-  return new Promise(function verifyPromise(resolve, reject) {
-    const payload = {secret, response: token};
-    if (remoteip) {
-      payload.remoteip = remoteip;
-    }
-    if (sitekey) {
-      payload.sitekey = sitekey;
-    }
-    // stringify the payload
-    const data = querystring.stringify(payload);
+const makeQuerystring = (payload = {}) => {
+  const params = new URLSearchParams();
+  for (const [name, value] of Object.entries(payload)) {
+    params.append(name, value);
+  }
+  return params.toString();
+};
 
-    // set up options for the request
-    // note that we're using form data here instead of sending JSON
-    const options = {
-      host,
-      path,
-      method: 'POST',
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded',
-        'content-length': Buffer.byteLength(data),
-      },
-    };
+const makeOptions = (data) => ({
+  host: HOST,
+  path: PATH,
+  method: 'POST',
+  headers: {
+    'content-type': 'application/x-www-form-urlencoded',
+    'content-length': Buffer.byteLength(data),
+  },
+});
 
-    // make the request, add response chunks to buffer, and finally resolve
-    // with the response. if any errors arise call the promise's reject
-    // function with the error.
+const fetch = (data, options) =>
+  new Promise((resolve, reject) => {
     const request = https.request(options, (response) => {
       response.setEncoding('utf8');
-
       let buffer = '';
-
       response
         .on('error', reject)
-        .on('data', (chunk) => buffer += chunk)
-        .on('end', () => resolve(JSON.parse(buffer)))
+        .on('data', (chunk) => (buffer += chunk))
+        .on('end', () => {
+          const object = JSON.parse(buffer);
+          resolve(object);
+        });
     });
-
     request.on('error', reject);
     request.write(data);
     request.end();
   });
+
+const verify = (secret, token, remoteip, sitekey) => {
+  const payload = { secret, response: token };
+  if (remoteip) {
+    payload.remoteip = remoteip;
+  }
+  if (sitekey) {
+    payload.sitekey = sitekey;
+  }
+
+  const data = makeQuerystring(payload);
+  const options = makeOptions(data);
+  return fetch(data, options);
 };
 
 module.exports = {
