@@ -49,7 +49,7 @@ const verify = (secret, token, remoteip = null, sitekey = null) => {
           } catch (error) {
             reject(error);
           }
-        })
+        });
     });
 
     request.on('error', reject);
