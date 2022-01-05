@@ -72,13 +72,25 @@ describe('hCaptcha', function () {
         .catch(done.fail);
     });
 
+    it('throws on invalid json response', function (done) {
+      nock('https://hcaptcha.com')
+        .post('/siteverify', 'secret=mysecret&response=token')
+        .reply(200, '<html lang="en">...');
+      verify(secret, token)
+        .then(done.fail)
+        .catch(error => {
+          assert.strictEqual(error.message, 'Unexpected token < in JSON at position 0')
+          done()
+        });
+    });
+
     it('throws on http failure', function (done) {
       nock('https://hcaptcha.com')
         .post('/siteverify', 'secret=mysecret&response=token')
         .replyWithError('failboat');
       verify(secret, token)
         .then(done.fail)
-        .catch(() => done())
+        .catch(() => done());
     });
   });
 });
