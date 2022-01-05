@@ -42,7 +42,14 @@ const verify = (secret, token, remoteip = null, sitekey = null) => {
       response
         .on('error', reject)
         .on('data', (chunk) => buffer += chunk)
-        .on('end', () => resolve(JSON.parse(buffer)))
+        .on('end', () => {
+          try {
+            const json = JSON.parse(buffer);
+            resolve(json);
+          } catch (error) {
+            reject(error);
+          }
+        });
     });
 
     request.on('error', reject);
