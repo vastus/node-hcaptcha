@@ -5,7 +5,7 @@ Verify hCaptcha token validity; simply w/ no dependencies.
 ## Install
 
 ```
-npm install --save hcaptcha
+npm install hcaptcha
 ```
 
 ## Usage
