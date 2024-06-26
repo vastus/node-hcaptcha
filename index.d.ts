@@ -20,6 +20,12 @@ type VerifyResponse = {
 
   /** List of error codes. Present if success is false */
   "error-codes"?: string[],
+
+  /** A score denoting malicious activity. (Optional b/c of ENTERPRISE feature) */
+  score?: number,
+
+  /** Reason(s) for score. (Optional b/c of ENTERPRISE feature) */
+  score_reason?: string[],
 };
 
 declare module "hcaptcha" {

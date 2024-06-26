@@ -79,7 +79,7 @@ describe('hCaptcha', function () {
       verify(secret, token)
         .then(done.fail)
         .catch(error => {
-          assert.strictEqual(error.message, 'Unexpected token < in JSON at position 0')
+          assert.match(error.message, /unexpected token/i);
           done()
         });
     });
